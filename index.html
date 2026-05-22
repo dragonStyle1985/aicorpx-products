@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AICorpX — 企业数字化解决方案</title>
+<style>
+  :root {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --border: #e7e5e4;
+    --text: #1c1917;
+    --text-muted: #78716c;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --green: #059669;
+    --green-light: #ecfdf5;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0c0a09;
+      --surface: #1c1917;
+      --border: #292524;
+      --text: #fafaf9;
+      --text-muted: #a8a29e;
+      --accent: #3b82f6;
+      --accent-light: #1e293b;
+      --green: #10b981;
+      --green-light: #064e3b;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 80px 0 60px; text-align: center;
+  }
+  header .badge {
+    display: inline-block; background: var(--accent-light); color: var(--accent);
+    font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 100px;
+    margin-bottom: 24px; letter-spacing: 0.5px;
+  }
+  header h1 {
+    font-size: 40px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  header p {
+    font-size: 18px; color: var(--text-muted); max-width: 600px; margin: 0 auto;
+  }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px; padding-bottom: 80px;
+  }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 32px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    display: flex; flex-direction: column;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  }
+  .card .icon {
+    width: 48px; height: 48px; border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin-bottom: 20px;
+  }
+  .card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .card .tagline { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
+  .card .features { list-style: none; font-size: 14px; color: var(--text); flex: 1; }
+  .card .features li {
+    padding: 6px 0; display: flex; align-items: flex-start; gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card .features li:last-child { border-bottom: none; }
+  .card .features li::before { content: "✓"; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  .card .price-row {
+    display: flex; align-items: baseline; gap: 8px; margin-top: 20px;
+    padding-top: 16px; border-top: 1px solid var(--border);
+  }
+  .card .price { font-size: 28px; font-weight: 800; }
+  .card .price-unit { font-size: 14px; color: var(--text-muted); }
+
+  .card .cta {
+    display: inline-block; margin-top: 16px; padding: 10px 24px;
+    background: var(--accent); color: #fff; border-radius: var(--radius-sm);
+    font-size: 15px; font-weight: 600; text-decoration: none; text-align: center;
+    transition: opacity 0.2s;
+  }
+  .card .cta:hover { opacity: 0.9; }
+
+  .faq { padding: 80px 0; }
+  .faq h2 { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 48px; }
+  .faq-item { margin-bottom: 32px; }
+  .faq-item h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .faq-item p { font-size: 15px; color: var(--text-muted); line-height: 1.7; }
+
+  footer {
+    text-align: center; padding: 40px 0; border-top: 1px solid var(--border);
+    font-size: 14px; color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+<header>
+  <div class="badge">源码交付 · 一次付费 · 不限用户</div>
+  <h1>企业数字化，一站解决</h1>
+  <p>专业团队深度定制的商业管理系统。<br>一次付费，源码交付，不限用户数。</p>
+</header>
+
+<div class="grid" id="products"></div>
+
+<section class="faq">
+  <h2>常见问题</h2>
+  <div class="faq-item">
+    <h4>这些系统和市面上的 SaaS 有什么区别？</h4>
+    <p>全部源码交付，部署在您自己的服务器上。数据完全自主可控，无月费，不限用户数。经过专业汉化、界面优化、二次开发后交付。</p>
+  </div>
+  <div class="faq-item">
+    <h4>可以定制功能吗？</h4>
+    <p>可以。基础版已包含核心功能。如需定制模块（对接微信支付、定制报表、对接现有系统），另行报价 ¥3,000-30,000。</p>
+  </div>
+  <div class="faq-item">
+    <h4>怎么部署？需要技术团队吗？</h4>
+    <p>提供一键部署脚本，30 分钟上线。也可选择托管服务（¥500/月），我们来维护服务器。</p>
+  </div>
+  <div class="faq-item">
+    <h4>为什么比 SaaS 便宜？</h4>
+    <p>我们不按年收租。您付的是汉化、适配、部署和维护的服务费，一次付清，源码归您。没有隐藏费用，没有用户数限制。</p>
+  </div>
+</section>
+</div>
+
+<footer>
+  <div class="container">
+    <p>咨询请关注微信公众号 <strong>AlphaFinance</strong> 或邮件 contact@aicorpx.com</p>
+  </div>
+</footer>
+
+<script>
+const products = [
+  {
+    name: "物业租赁管理系统",
+    tagline: "专为二房东和公寓运营打造",
+    icon: "🏢",
+    iconBg: "#eff6ff",
+    features: [
+      "租约管理：到期自动提醒，租金自动计算",
+      "房产档案：多套房产统一管理，图片+文档归档",
+      "租客管理：租客信息、合同、维修工单",
+      "收支统计：房租收入、维修支出、利润率一目了然",
+      "多角色权限：房东、管理员、财务分离"
+    ],
+    price: "5,800",
+    unit: "元/套 · 源码交付",
+    target: "二房东、公寓运营公司、物业公司"
+  },
+  {
+    name: "企业进销存 ERP",
+    tagline: "采购销售库存财务一体化",
+    icon: "📊",
+    iconBg: "#ecfdf5",
+    features: [
+      "采购管理：供应商、采购单、入库全流程",
+      "销售管理：报价、订单、出库、回款追踪",
+      "库存管理：多仓库、批次追踪、库存预警",
+      "财务报表：利润表、现金流量表、应收应付",
+      "权限体系：部门隔离、操作日志、审批流"
+    ],
+    price: "8,800",
+    unit: "元/套 · 源码交付",
+    target: "中小工厂、贸易公司、批发商"
+  },
+  {
+    name: "AI 智能记账系统",
+    tagline: "拍照记账，AI 自动分类",
+    icon: "🧾",
+    iconBg: "#fef3c7",
+    features: [
+      "AI 发票识别：拍照自动录入，支持增值税发票/收据",
+      "自动分类：智能归类收支科目，告别手工流水",
+      "税务报表：增值税、所得税申报表一键生成",
+      "多主体管理：同时管多家公司账目",
+      "数据导出：对接金蝶/用友格式"
+    ],
+    price: "2,800",
+    unit: "元/套 · 源码交付",
+    target: "个体户、自由职业者、代账公司"
+  },
+  {
+    name: "独立电商平台",
+    tagline: "全功能商城，摆脱平台抽成",
+    icon: "🛒",
+    iconBg: "#fce7f3",
+    features: [
+      "多店铺模式：一个平台管理多个品牌",
+      "全功能商城：商品、购物车、支付、物流",
+      "对接微信支付/支付宝：开箱即用",
+      "SEO 优化：产品页、分类页均可定制",
+      "API 开放：对接 ERP、WMS、小程序"
+    ],
+    price: "5,800",
+    unit: "元/套 · 源码交付",
+    target: "独立品牌商家、想脱离平台的电商卖家"
+  },
+  {
+    name: "培训机构管理系统",
+    tagline: "排课、考试、学员、财务全管",
+    icon: "🎓",
+    iconBg: "#ede9fe",
+    features: [
+      "课程管理：排课、选课、退课全流程",
+      "在线考试：题库管理、自动阅卷、成绩统计",
+      "学员管理：报名、分班、出勤、证书",
+      "讲师管理：排课、课时统计、薪酬计算",
+      "家长端：学习进度、成绩推送、在线缴费"
+    ],
+    price: "5,800",
+    unit: "元/套 · 源码交付",
+    target: "培训机构、家教中心、艺术学校"
+  }
+];
+
+function renderProducts() {
+  const grid = document.getElementById('products');
+  grid.innerHTML = products.map(p => `
+    <div class="card">
+      <div class="icon" style="background:${p.iconBg}">${p.icon}</div>
+      <h3>${p.name}</h3>
+      <div class="tagline">${p.tagline}</div>
+      <ul class="features">
+        ${p.features.map(f => `<li>${f}</li>`).join('')}
+      </ul>
+      <div class="price-row">
+        <span class="price">¥${p.price}</span>
+        <span class="price-unit">${p.unit}</span>
+      </div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">适合：${p.target}</div>
+      <a href="javascript:void(0)" onclick="inquire('${p.name}')" class="cta">获取方案</a>
+    </div>
+  `).join('');
+}
+
+function inquire(name) {
+  alert('感谢关注「' + name + '」！\n\n请通过以下方式联系我们：\n\n微信公众号：AlphaFinance\n邮箱：contact@aicorpx.com\n\n留言产品名称，我们将在 24 小时内回复。');
+}
+
+renderProducts();
+</script>
+</body>
+</html>
