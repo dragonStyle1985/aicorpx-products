@@ -104,7 +104,9 @@
   .section-center .section-desc { margin-left: auto; margin-right: auto; }
 
   /* ── Products Grid ── */
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
   .card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 36px; transition: all 0.25s;
@@ -129,7 +131,13 @@
   .card .cta-btn:hover { background: #6d28d9; }
 
   /* ── Service Cards ── */
-  .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .services-grid { grid-template-columns: 1fr; } }
+
+  /* ── Why Us (4 cards → 2×2) ── */
+  .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  @media (max-width: 640px) { .why-grid { grid-template-columns: 1fr; } }
   .service-card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 28px; transition: all 0.2s;
@@ -195,7 +203,6 @@
   @media (max-width: 768px) {
     .stats { grid-template-columns: repeat(2, 1fr); }
     .hero { padding: 60px 0 40px; }
-    .grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -217,7 +224,7 @@
 <!-- ═══════════ STATS ═══════════ -->
 <div class="container">
   <div class="stats">
-    <div><div class="stat-num">5+</div><div class="stat-label">成熟产品</div></div>
+    <div><div class="stat-num">6+</div><div class="stat-label">成熟产品</div></div>
     <div><div class="stat-num">100%</div><div class="stat-label">源码交付</div></div>
     <div><div class="stat-num">Kaggle</div><div class="stat-label">数据竞赛排名</div></div>
     <div><div class="stat-num">24h</div><div class="stat-label">技术支持响应</div></div>
@@ -273,6 +280,10 @@
         <h4>📡 AI 销售外拓</h4>
         <p>自动化线索挖掘与冷启动外联。AI 搜索潜在客户、个性化触达、自动跟进。面向出海企业，中文原生支持，比 11x.ai / Artisan 更灵活的价格。已有客户案例，按需报价。</p>
       </div>
+      <div class="service-card">
+        <h4>📱 社交媒体运营</h4>
+        <p>微信公众号、小红书、抖音内容策划与代运营。AI 辅助创作，数据驱动优化，定期产出行业内容。</p>
+      </div>
     </div>
   </div>
 </div>
@@ -285,7 +296,7 @@
       <h2 class="section-title">源码交付，没有套路</h2>
       <p class="section-desc">和市面上的 SaaS 不一样，我们不按年收租。</p>
     </div>
-    <div class="services-grid">
+    <div class="why-grid">
       <div class="service-card">
         <h4>🔓 源码归你</h4>
         <p>全部源代码交付，部署在你的服务器上。数据不出门，系统不受人控制。想改就改，想停就停。</p>
@@ -456,6 +467,18 @@ const products = [
       "讲师管理：排课、课时统计、薪酬计算",
       "家长端：学习进度、成绩推送、在线缴费"
     ], price: "5,800", target: "培训机构、家教中心、艺术学校"
+  },
+  {
+    name: "OA 协同办公系统",
+    tagline: "审批、文档、任务一体化",
+    icon: "📋", iconBg: "#f0fdf4",
+    features: [
+      "审批流程：自定义表单、多级审批、手机端发起",
+      "文档管理：在线编辑、版本管理、全文搜索",
+      "任务看板：Kanban 视图、甘特图、工时统计",
+      "公告通知：全员推送、已读回执、分类归档",
+      "移动办公：企业微信/钉钉集成，随时随地处理"
+    ], price: "4,800", target: "中小企业、创业团队、远程办公团队"
   }
 ];
 
