@@ -138,6 +138,13 @@
   /* ── Why Us (4 cards → 2×2) ── */
   .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
   @media (max-width: 640px) { .why-grid { grid-template-columns: 1fr; } }
+
+  /* ── FAQ Grid ── */
+  .faq-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 640px) { .faq-grid { grid-template-columns: 1fr; } }
+  .faq-item { padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+  .faq-item h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .faq-item p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
   .service-card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 28px; transition: all 0.2s;
@@ -146,10 +153,7 @@
   .service-card h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
   .service-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
 
-  /* ── FAQ ── */
-  .faq-item { margin-bottom: 28px; padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); }
-  .faq-item h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-  .faq-item p { font-size: 14px; color: var(--text-muted); }
+  /* ── FAQ (moved to .faq-grid block below) ── */
 
   /* ── CTA Banner ── */
   .cta-banner {
@@ -278,7 +282,7 @@
       </div>
       <div class="service-card">
         <h4>📡 AI 销售外拓</h4>
-        <p>自动化线索挖掘与冷启动外联。AI 搜索潜在客户、个性化触达、自动跟进。面向出海企业，中文原生支持，比 11x.ai / Artisan 更灵活的价格。已有客户案例，按需报价。</p>
+        <p>AI 搜索潜在客户、个性化触达、自动跟进。面向出海企业，中文原生支持，按需报价。</p>
       </div>
       <div class="service-card">
         <h4>📱 社交媒体运营</h4>
@@ -323,7 +327,7 @@
     <div class="section-center">
       <h2 class="section-title">常见问题</h2>
     </div>
-    <div style="max-width: 720px; margin: 0 auto;">
+    <div class="faq-grid">
       <div class="faq-item">
         <h4>这些系统和市面上的 SaaS 有什么区别？</h4>
         <p>全部源码交付，部署在您自己的服务器上。数据完全自主可控，无月费，不限用户数。经过专业汉化、界面优化、二次开发后交付。</p>
@@ -343,8 +347,6 @@
     </div>
   </div>
 </div>
-
-<!-- ═══════════ CTA ═══════════ -->
 <div class="container">
   <div class="cta-banner">
     <h3>🚀 有想法？来聊聊</h3>
