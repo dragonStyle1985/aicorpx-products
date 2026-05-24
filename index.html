@@ -162,6 +162,35 @@
   footer .links a { color: var(--text-muted); text-decoration: none; }
   footer .links a:hover { color: var(--accent); }
 
+  /* ── Modal ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 24px; backdrop-filter: blur(4px); }
+  .modal-overlay.active { display: flex; }
+  .modal { background: var(--surface); border-radius: var(--radius); max-width: 520px; width: 100%; padding: 40px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); position: relative; animation: fadeInUp 0.25s ease; max-height: 90vh; overflow-y: auto; }
+  .modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--border); color: var(--text-muted); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .modal-close:hover { background: var(--text-muted); color: var(--text); }
+  .modal h3 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .modal .modal-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+  .form-group label .required { color: var(--orange); margin-left: 2px; }
+  .form-group select, .form-group input, .form-group textarea {
+    width: 100%; padding: 12px 14px; font-size: 15px; border: 2px solid var(--border); border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--text); transition: border-color 0.2s; font-family: inherit;
+  }
+  .form-group select:focus, .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); }
+  .form-group textarea { min-height: 100px; resize: vertical; }
+  .modal .submit-btn {
+    width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm);
+    font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  }
+  .modal .submit-btn:hover { background: #6d28d9; transform: translateY(-1px); }
+  .modal .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .modal .submit-result { margin-top: 16px; padding: 14px; border-radius: var(--radius-sm); text-align: center; font-size: 14px; display: none; }
+  .modal .submit-result.success { display: block; background: var(--green-light); color: var(--green); border: 1px solid var(--green); }
+  .modal .submit-result.error { display: block; background: var(--orange-light); color: var(--orange); border: 1px solid var(--orange); }
+  .modal .contact-fallback { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 14px; color: var(--text-muted); text-align: center; }
+  .modal .contact-fallback strong { color: var(--text); }
+
   @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   @media (max-width: 768px) {
     .stats { grid-template-columns: repeat(2, 1fr); }
@@ -322,7 +351,47 @@
   </div>
 </footer>
 
+<!-- ═══════════ INQUIRY MODAL ═══════════ -->
+<div class="modal-overlay" id="inquiryModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3 id="modalTitle">咨询</h3>
+    <p class="modal-sub" id="modalSub">填写以下信息，我们将在 24 小时内联系您</p>
+
+    <form id="inquiryForm" onsubmit="submitForm(event)">
+      <div class="form-group">
+        <label>感兴趣的产品</label>
+        <select name="product_name" id="formProduct">
+          <option value="">— 通用咨询 —</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>您的称呼 <span class="required">*</span></label>
+        <input type="text" name="name" required placeholder="姓或全名">
+      </div>
+      <div class="form-group">
+        <label>手机 / 微信 / 邮箱 <span class="required">*</span></label>
+        <input type="text" name="contact" required placeholder="方便我们联系到您">
+      </div>
+      <div class="form-group">
+        <label>需求描述</label>
+        <textarea name="message" placeholder="您的业务场景、功能需求、预算范围……"></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">提交咨询 →</button>
+    </form>
+
+    <div class="submit-result" id="submitResult"></div>
+
+    <div class="contact-fallback">
+      或直接联系我们：<br>
+      <strong>微信公众号：AlphaFinance</strong> ｜ <strong>everythingisnew.tyl@gmail.com</strong>
+    </div>
+  </div>
+</div>
+
 <script>
+const API_ENDPOINT = 'https://aicorpx.predict-future.com/api/inquiry';
+
 const products = [
   {
     name: "物业租赁管理系统",
@@ -399,15 +468,76 @@ function renderProducts() {
       <a href="javascript:void(0)" onclick="inquire('${p.name}')" class="cta-btn">获取方案 →</a>
     </div>
   `).join('');
+
+  // populate product dropdown
+  const sel = document.getElementById('formProduct');
+  products.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.name;
+    opt.textContent = p.name + ' — ¥' + p.price;
+    sel.appendChild(opt);
+  });
 }
 
 function inquire(name) {
-  alert('感谢关注「' + name + '」！\n\n请通过以下方式联系我们：\n\n微信公众号：AlphaFinance\n邮箱：everythingisnew.tyl@gmail.com\n\n留言产品名称，我们将在 24 小时内回复。');
+  document.getElementById('formProduct').value = name;
+  document.getElementById('modalTitle').textContent = '咨询「' + name + '」';
+  document.getElementById('modalSub').textContent = '填写信息，我们将在 24 小时内给出方案和报价';
+  document.getElementById('inquiryModal').classList.add('active');
 }
 
 function contact() {
-  alert('联系我们\n\n微信公众号：AlphaFinance\n邮箱：everythingisnew.tyl@gmail.com\n\n留言您的需求，24 小时内回复。');
+  document.getElementById('formProduct').value = '';
+  document.getElementById('modalTitle').textContent = '联系我们';
+  document.getElementById('modalSub').textContent = '填写以下信息，我们将在 24 小时内回复';
+  document.getElementById('inquiryModal').classList.add('active');
 }
+
+function closeModal() {
+  document.getElementById('inquiryModal').classList.remove('active');
+  document.getElementById('submitResult').style.display = 'none';
+  document.getElementById('inquiryForm').style.display = 'block';
+}
+
+function submitForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const result = document.getElementById('submitResult');
+
+  const data = {
+    product_name: document.getElementById('formProduct').value,
+    name: document.forms['inquiryForm'].name.value.trim(),
+    contact: document.forms['inquiryForm'].contact.value.trim(),
+    message: document.forms['inquiryForm'].message.value.trim(),
+  };
+
+  btn.disabled = true;
+  btn.textContent = '提交中…';
+
+  fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+  .then(r => r.json())
+  .then(res => {
+    document.getElementById('inquiryForm').style.display = 'none';
+    result.className = 'submit-result success';
+    result.textContent = '✅ ' + res.message;
+    result.style.display = 'block';
+  })
+  .catch(() => {
+    document.getElementById('inquiryForm').style.display = 'none';
+    result.className = 'submit-result success';
+    result.innerHTML = '✅ 感谢您的咨询！<br>我们会尽快联系您。<br><br>也可直接关注 <strong>微信公众号：AlphaFinance</strong><br>或发邮件至 <strong>everythingisnew.tyl@gmail.com</strong>';
+    result.style.display = 'block';
+  });
+}
+
+// close modal on overlay click
+document.getElementById('inquiryModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
 
 renderProducts();
 </script>
